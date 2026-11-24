@@ -1,0 +1,44 @@
+_subdirectory: template
+_answers_file: .copier-answers.yml
+# Installing writes the lockfile that `devbox run -- task setup` then installs from; copier asks for --trust to run it.
+_tasks:
+  - devbox run -- composer install --no-interaction
+
+project_name:
+  type: str
+  help: Repository and Composer package name, in kebab-case
+  validator: "{% if not (project_name | regex_search('^[a-z][a-z0-9]*(-[a-z0-9]+)*$')) %}Use lowercase words of letters and digits, joined by hyphens, starting with a letter{% endif %}"
+
+description:
+  type: str
+  help: One sentence on what the project is
+
+# How work reaches the trunk, which repo-list and repo-fix read. No default: a wrong guess would push or rewrite the
+# wrong things.
+integration:
+  type: str
+  help: How work reaches the trunk
+  choices:
+    "direct: commit on the trunk and push it": direct
+    "pr-rebase: branches are rebased and land through pull requests": pr-rebase
+    "pr-merge: branches merge the trunk in and land through pull requests": pr-merge
+
+php_version:
+  type: str
+  default: 8.5.12
+
+composer_version:
+  type: str
+  default: 2.10.3
+
+# The root namespace's last segment: the repository's name in PascalCase (php-ianf-strict-baseline → PhpIanfStrictBaseline).
+namespace:
+  type: str
+  default: "{{ project_name.split('-') | map('capitalize') | join('') }}"
+  when: false
+
+# A local php-ianf-strict-baseline checkout to install from instead of GitHub, for trying a baseline that isn't pushed yet.
+baseline_path:
+  type: str
+  default: ""
+  when: false

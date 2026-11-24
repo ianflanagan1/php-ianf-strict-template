@@ -1,0 +1,30 @@
+version: '3'
+
+tasks:
+  setup:
+    desc: Install dependencies from the lockfile
+    cmds:
+      - 'composer install --no-interaction'
+
+  check:
+    desc: composer.json, php-ianf-strict-baseline verify, the tests, PHPStan, deptrac, Pint and the COUPLED tags
+    cmds:
+      - 'composer validate --strict'
+      - 'vendor/bin/php-ianf-strict-baseline verify'
+      - 'vendor/bin/phpunit --colors=never'
+      - 'vendor/bin/phpstan analyse --no-progress'
+      - 'vendor/bin/deptrac analyse --no-progress'
+      - 'vendor/bin/pint --test'
+      - coupled-tags-lint
+
+  format:
+    desc: Format every file
+    cmds:
+      - 'vendor/bin/pint'
+
+  lint-file:
+    desc: 'Format and analyse the PHP files given after --, leaving other files alone: task lint-file -- <file>...'
+    vars:
+      PHP_FILES: '{{range .CLI_ARGS_LIST}}{{if or (hasSuffix ".php" .) (hasPrefix "bin/" .)}}{{shellQuote .}} {{end}}{{end}}'
+    cmds:
+      - '{{if .PHP_FILES}}vendor/bin/pint {{.PHP_FILES}} && vendor/bin/phpstan analyse --no-progress {{.PHP_FILES}}{{end}}'

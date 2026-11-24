@@ -1,0 +1,23 @@
+# {{ project_name }}
+
+{{ description }}
+
+## Tasks
+
+Every task is in `Taskfile.yml`; run it through devbox, which pins the tools: `devbox run -- task setup` installs dependencies; `devbox run -- task check` validates `composer.json`, runs `php-ianf-strict-baseline verify`, the tests, PHPStan and deptrac, and checks formatting, failing on any problem; `devbox run -- task format` fixes formatting; `devbox run -- task lint-file -- <files>` formats and analyses just those files.
+
+The architecture, PHPStan and Pint rules come from `ianflanagan1/php-ianf-strict-baseline`, through `phpstan/extension-installer`, `deptrac.yaml` and `pint.json`: change them there, not here. Its README sets out the roles and the rules. The tools keep their caches in `cache/`, which `.gitignore` ignores; `php-ianf-strict-baseline verify` fails without the line.
+
+The project came from `php-ianf-strict-template`; `copier update --trust` brings in later changes to it.
+
+## Layout
+
+- `src/Core/`: decisions as pure functions over plain values
+- `src/Ports/`: the interfaces orchestrators call and driven adapters implement
+- `src/Orchestrators/`: one use case each, reaching outside only through ports
+- `src/Adapters/Driving/` and `src/Adapters/Driven/`: the adapters
+- `bin/{{ project_name }}`: the entrypoint; list any other script in `bin/` in `phpstan.neon`'s `paths`
+
+## Decisions made
+
+## Open questions

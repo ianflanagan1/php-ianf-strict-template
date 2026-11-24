@@ -1,0 +1,7 @@
+imports:
+  - vendor/ianflanagan1/php-ianf-strict-baseline/config/deptrac.yaml
+
+deptrac:
+  paths:
+    - src
+    - bin

@@ -1,0 +1,12 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+// The entrypoint: the only place that reads the configuration, builds the adapters and
+// orchestrators, and starts a driving adapter. An uncaught exception ends here, where PHP prints
+// it and exits non-zero.
+
+require __DIR__.'/../vendor/autoload.php';
+
+fwrite(STDOUT, "{{ project_name }}: nothing here yet.\n");

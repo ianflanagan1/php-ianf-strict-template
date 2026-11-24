@@ -1,0 +1,4 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.18.4/.schema/devbox.schema.json",
+  "packages": ["copier@9.17.1", "git@latest", "go-task@3.53.1"]
+}

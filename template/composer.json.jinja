@@ -1,0 +1,52 @@
+{
+    "name": "ianflanagan1/{{ project_name }}",
+    "description": "{{ description }}",
+    "type": "project",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Ian Flanagan"
+        }
+    ],
+    "require": {
+        "php": "^{{ php_version.split('.')[0] }}.{{ php_version.split('.')[1] }}"
+    },
+    "require-dev": {
+        "ianflanagan1/php-ianf-strict-baseline": "dev-main",
+        "laravel/pint": "^1.32",
+        "phpstan/extension-installer": "^1.4",
+        "phpunit/phpunit": "^12.5"
+    },
+    "repositories": [
+{%- if baseline_path %}
+        {
+            "type": "path",
+            "url": "{{ baseline_path }}"
+        }
+{%- else %}
+        {
+            "type": "vcs",
+            "url": "https://github.com/ianflanagan1/php-ianf-strict-baseline"
+        }
+{%- endif %}
+    ],
+    "autoload": {
+        "psr-4": {
+            "IanFlanagan\\{{ namespace }}\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "IanFlanagan\\{{ namespace }}\\Tests\\": "tests/"
+        }
+    },
+    "bin": [
+        "bin/{{ project_name }}"
+    ],
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
+    }
+}

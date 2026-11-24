@@ -1,0 +1,3 @@
+{
+    "extend": "vendor/ianflanagan1/php-ianf-strict-baseline/config/pint.json"
+}

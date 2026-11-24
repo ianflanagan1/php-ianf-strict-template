@@ -1,0 +1,28 @@
+version: '3'
+
+tasks:
+  check:
+    desc: Generate a project from the template and run its own check
+    cmds:
+      - task: test
+
+  test:
+    desc: >-
+      Generate a project from the template and run its own check, php-ianf-strict-baseline verify included. BASELINE is a local
+      php-ianf-strict-baseline checkout to install from instead of GitHub, to try a baseline that isn't pushed yet.
+    vars:
+      OUT:
+        sh: mktemp -d
+    cmds:
+      - defer: rm -rf {{shellQuote .OUT}}
+      - >-
+        copier copy --trust --defaults --quiet
+        --data project_name=sample-app --data description='A sample project' --data integration=pr-rebase
+        {{if .BASELINE}}--data baseline_path={{shellQuote .BASELINE}}{{end}}
+        . {{shellQuote .OUT}}/sample-app
+      # The project declares the integration mode it was given, which repo-list and repo-fix read.
+      - grep --quiet --line-regexp 'integration = "pr-rebase"' {{shellQuote .OUT}}/sample-app/.config/ianf-repo-tools.toml
+      # The root namespace is the repository's name in PascalCase.
+      - grep --quiet --fixed-strings '"IanFlanagan\\SampleApp\\"' {{shellQuote .OUT}}/sample-app/composer.json
+      - git -C {{shellQuote .OUT}}/sample-app init --quiet
+      - cd {{shellQuote .OUT}}/sample-app && devbox run -- task check

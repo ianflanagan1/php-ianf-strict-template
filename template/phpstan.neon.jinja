@@ -1,0 +1,11 @@
+# phpstan/extension-installer includes php-ianf-strict-baseline's config/phpstan.neon. List each script in bin/
+# by name: PHPStan only finds .php files in a directory.
+parameters:
+    # Beside the other tools' caches, in cache/
+    tmpDir: cache/phpstan
+    level: 9
+    checkMissingOverrideMethodAttribute: true
+    paths:
+        - src
+        - bin/{{ project_name }}
+        - tests
