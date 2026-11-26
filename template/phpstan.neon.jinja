@@ -3,7 +3,9 @@
 parameters:
     # Beside the other tools' caches, in cache/
     tmpDir: cache/phpstan
-    level: 9
+    # PHPStan's strictest. PHPStan reads the level, as it reads tmpDir, only from this file and what it includes
+    # directly, so the baseline's config can't set it.
+    level: 10
     checkMissingOverrideMethodAttribute: true
     paths:
         - src
