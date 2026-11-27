@@ -6,3 +6,4 @@ integration = "direct"
 
 [remotes.origin]
 git-host = "github"
+visibility = "public"
